@@ -37,7 +37,7 @@ router.delete('/deliveries/:id', (req, res) => {
     res.status(400).json({ message: "Specified id is not valid" });
     return;
   }
-  Delivery.findByIdAndDelete()
+  Delivery.findByIdAndDelete(req.params.id)
     .then(() => res.json({ message: `${req.params.id} deleted with success` }))
     .catch(err => res.status(500).json(err))
 })

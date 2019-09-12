@@ -1,12 +1,30 @@
 import React, { Component } from 'react';
 import './App.css';
 import axios from 'axios'
+import Map from './Map'
 
 class App extends Component {
   constructor() {
     super()
     this.state = {
-      deliveries: [],
+      deliveries: [{
+        name: '',
+        peso: '',
+        endereco: {
+          logradouro: '',
+          numero: '',
+          bairro: '',
+          complemento: '',
+          cidade: '',
+          estado: '',
+          pais: '',
+          geolocalizacao: {
+            latitude: '',
+            longitude: ''
+          }
+        }
+      }],
+
       name: '',
       peso: '',
       endereco: '',
@@ -22,8 +40,28 @@ class App extends Component {
         longitude: ''
       }
     };
+    this.resetCadastro = this.resetCadastro.bind(this)
     this.handleFormSubmit = this.handleFormSubmit.bind(this)
     this.getLocation = this.getLocation.bind(this)
+  }
+
+  resetCadastro() {
+    this.setState({
+      name: '',
+      peso: '',
+      endereco: '',
+      logradouro: '',
+      numero: '',
+      bairro: '',
+      complemento: '',
+      cidade: '',
+      estado: '',
+      pais: '',
+      geolocalizacao: {
+        latitude: '',
+        longitude: ''
+      }
+    })
   }
 
   getLocation(e) {
@@ -56,6 +94,17 @@ class App extends Component {
       .catch(err => console.log(err))
   }
 
+  deleteDelivery(id, index) {
+    axios.delete(`${process.env.REACT_APP_API_URL}/deliveries/${id}`)
+      .then(() => {
+        const arr = this.state.deliveries.map(el => el)
+        arr.splice(index, 1)
+        this.setState({
+          deliveries: arr
+        })
+      })
+      .catch(err => console.log(err))
+  }
   //Gerencia as mudanças de inputs
   handleChange(event) {
     this.setState({
@@ -77,7 +126,7 @@ class App extends Component {
       geolocalizacao: this.state.geolocalizacao
     }
     axios.post(`${process.env.REACT_APP_API_URL}/create-delivery`, { name, peso, endereco })
-      .then(() => {
+      .then((response) => {
         //Reseta os campos
         this.setState({
           name: '',
@@ -95,6 +144,7 @@ class App extends Component {
             longitude: ''
           }
         })
+        this.getDeliveries()
       })
       .catch(err => console.log(err))
   }
@@ -104,44 +154,72 @@ class App extends Component {
   }
   render() {
     return (
-      <div className="form">
-        <form onSubmit={this.handleFormSubmit}>
+      <div>
+        <div className="form">
+          <form onSubmit={this.handleFormSubmit}>
 
-          <input type="text"
-            name="name"
-            placeholder="Nome Cliente"
-            onChange={event => this.handleChange(event)}
-            value={this.state.name} />
-
-          <input type="number"
-            name="peso"
-            placeholder="Peso da Entrega"
-            onChange={event => this.handleChange(event)}
-            value={this.state.peso} />
-
-          <input type="text"
-            name="endereco"
-            placeholder="Endereco do Cliente"
-            onChange={event => this.handleChange(event)}
-            value={this.state.endereco} />
-          <button type="button" id="buscar" onClick={this.getLocation}>Buscar</button>
-
-
-          <div className="geolocation">
-            <input type="number"
-              placeholder="Latitude"
-              value={this.state.geolocalizacao.latitude} disabled />
+            <input type="text"
+              name="name"
+              placeholder="Nome Cliente"
+              onChange={event => this.handleChange(event)}
+              value={this.state.name} />
 
             <input type="number"
-              placeholder="Longitude"
-              value={this.state.geolocalizacao.longitude}
-              disabled />
+              name="peso"
+              placeholder="Peso da Entrega"
+              onChange={event => this.handleChange(event)}
+              value={this.state.peso} />
+
+            <input type="text"
+              name="endereco"
+              placeholder="Endereco do Cliente"
+              onChange={event => this.handleChange(event)}
+              value={this.state.endereco} />
+            <button type="button" id="buscar" onClick={this.getLocation}>Buscar</button>
+
+
+            <div className="geolocation">
+              <input type="number"
+                placeholder="Latitude"
+                value={this.state.geolocalizacao.latitude} disabled />
+
+              <input type="number"
+                placeholder="Longitude"
+                value={this.state.geolocalizacao.longitude}
+                disabled />
+            </div>
+
+            <button type="submit" id="cadastrar">Cadastrar Cliente</button>
+            <button type="button" onClick={this.resetCadastro} id="resetar">Resetar Cadastro</button>
+            
+          </form>
+          <section className="map">
+            <div className="vertical-line"></div>
+            <Map deliveries={this.state.deliveries} />
+            <div className="vertical-line"></div>
+        </section>
+        </div>
+        <div className="delivery-column">
+
+          <div className="delivery-list">
+            <p>Nome</p><p>Rua</p><p>Cidade</p><p>País</p><p>Peso</p><p>Lat</p><p>Lng</p>
           </div>
 
-          <button type="submit" id="cadastrar">Cadastrar Cliente</button>
-        </form>
-        <div id="mapid"></div>
-      </div>)
+          {this.state.deliveries.map((delivery, index) => {
+            return <div className="delivery-list" key={index}>
+              <p>{delivery.name}</p>
+              <p>{delivery.endereco.logradouro}</p>
+              <p>{delivery.endereco.cidade}</p>
+              <p>{delivery.endereco.pais}</p>
+              <p>{delivery.peso}</p>
+              <p>{parseFloat(delivery.endereco.geolocalizacao.latitude).toFixed(2)}</p>
+              <p>{parseFloat(delivery.endereco.geolocalizacao.longitude).toFixed(2)}</p>
+              <button id="delete-btn" onClick={() => this.deleteDelivery(delivery._id, index)}>Delete</button>
+            </div>
+          })}
+        </div>
+      </div>
+    )
 
   }
 }

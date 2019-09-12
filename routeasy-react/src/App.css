@@ -1,5 +1,6 @@
 .form {
   display: flex;
+  margin: auto;
   justify-content: center;
   padding: 10px;
   background-color: rgb(200, 203, 204);
@@ -7,7 +8,10 @@
 
 .form input{
   display: flex;
-  margin: auto;
+  margin: 5% auto;
+  width: 50%;
+  padding: 10px;
+  text-align: center;
   flex-direction:row;
   flex-flow: wrap;
   align-items: center;
@@ -40,6 +44,16 @@
   padding: 5px 5%;
 }
 
+#resetar {
+  display: flex;
+  text-align: center;
+  background-color: rgb(207, 14, 14);
+  border: 1px solid grey;
+  margin: 5% auto;
+  color: white;
+  padding: 5px 5%;
+}
+
 #buscar {
   display: flex;
   text-align: center;
@@ -51,7 +65,48 @@
   padding: 5px 5%;
 }
 
-#mapid {
-   height: 180px; 
-  }
+.vertical-line {
+  border-left: 2px solid black;
+  height: 400px;
+}
 
+.map {
+  display: flex;
+}
+
+.delivery-list {
+  display: flex;
+  flex-flow: row;
+  width: 100%;
+  justify-content: center;
+  
+}
+
+.delivery-list > p {
+  display:flex;
+  margin: 2%;
+  width: 100px;
+  height: 50px;
+  flex-flow: column;
+  text-align: center;
+  justify-content: center;
+  background-color: rgb(104, 109, 110);
+  color: white;
+  padding: 10px;
+}
+
+.delivery-column {
+  display:flex;
+  flex-flow: column;
+  justify-content: center;
+}
+
+#delete-btn {
+  color: white;
+  width: 100px;
+  height: 50px;
+  align-self: center;
+  border: none;
+  border-radius: 10px;
+  background-color: rgb(207, 14, 14);
+}
