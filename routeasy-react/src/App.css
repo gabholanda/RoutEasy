@@ -1,33 +1,57 @@
-.App {
-  text-align: center;
-}
-
-.App-logo {
-  animation: App-logo-spin infinite 20s linear;
-  height: 40vmin;
-  pointer-events: none;
-}
-
-.App-header {
-  background-color: #282c34;
-  min-height: 100vh;
+.form {
   display: flex;
-  flex-direction: column;
-  align-items: center;
   justify-content: center;
-  font-size: calc(10px + 2vmin);
+  padding: 10px;
+  background-color: rgb(200, 203, 204);
+}
+
+.form input{
+  display: flex;
+  margin: auto;
+  flex-direction:row;
+  flex-flow: wrap;
+  align-items: center;
+}
+
+.geolocation {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+
+.geolocation input {
+  width: 20%;
+  margin: auto;
+  margin: 10% 15px;
+  padding: 5px 15px;
+  text-align: center;
+  font-size: 16px;
+}
+
+#cadastrar {
+  display: flex;
+  text-align: center;
+  background-color: rgb(31, 204, 77);
+  border: 1px solid grey;
+  margin: 0 auto;
   color: white;
+  padding: 5px 5%;
 }
 
-.App-link {
-  color: #61dafb;
+#buscar {
+  display: flex;
+  text-align: center;
+  text-decoration: underline;
+  background-color: rgb(51, 54, 52);
+  border: none;
+  margin: 1% auto;
+  color: white;
+  padding: 5px 5%;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
+#mapid {
+   height: 180px; 
   }
-  to {
-    transform: rotate(360deg);
-  }
-}
+

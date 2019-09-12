@@ -32,7 +32,7 @@ router.post('/create-delivery', (req, res) => {
   })
 })
 
-router.delete('/deliveries', (req, res) => {
+router.delete('/deliveries/:id', (req, res) => {
   if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
     res.status(400).json({ message: "Specified id is not valid" });
     return;
@@ -41,3 +41,5 @@ router.delete('/deliveries', (req, res) => {
     .then(() => res.json({ message: `${req.params.id} deleted with success` }))
     .catch(err => res.status(500).json(err))
 })
+
+module.exports = router;

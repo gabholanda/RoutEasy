@@ -9,9 +9,6 @@ const logger = require("morgan");
 const path = require("path");
 const cors = require("cors");
 const session = require("express-session");
-const passport = require("./config/passport");
-
-
 
 mongoose
   .connect(process.env.MONGODB_URI, { useNewUrlParser: true })
@@ -65,12 +62,11 @@ app.use(
   })
 );
 
-// passport initialize session
-app.use(passport.initialize());
-app.use(passport.session());
-
 const index = require("./routes/index");
 app.use("/", index);
+
+const delivery = require("./routes/delivery")
+app.use("/api", delivery)
 
 // index for react
 app.use((req, res, next) => {
